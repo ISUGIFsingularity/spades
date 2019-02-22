@@ -1,0 +1,3 @@
+#!/bin/bash
+
+singularity exec --bind $spadesgit:/mnt --bind $PWD $spadesgit/SIMG/ISUGIFsingularity-spades-master.simg $@

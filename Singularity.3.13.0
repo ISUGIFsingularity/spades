@@ -37,7 +37,7 @@ git pull
 #awk '/v1.5.tar.gz/ { print; print "\n";printf "    version('\''3.13.0'\'', '\''b2543a06787368763d2183388160a00e'\'', url='\'https://github.com/marbl/spades/releases/download/v1.8/spades-1.8.Linux-amd64.tar.xz'\'')"; next }1' $SPACK_ROOT/var/spack/repos/builtin/packages/spades/package.py  > package.py
 
 
-mv package.py $SPACK_ROOT/var/spack/repos/builtin/packages/spades/
+#mv package.py $SPACK_ROOT/var/spack/repos/builtin/packages/spades/
 cd -
 
 

@@ -1,17 +1,18 @@
 Bootstrap:shub
-From:AaronTHolt/openmpi_singularity:spack_base
+From:gcc:6.5.0
+
 
 %labels
 MAINTAINER severin@iastate.edu
-APPLICATION MaSurCArunScripts
+APPLICATION SPAdes
 
 %help
-This container contains all the necessary programs to run MaSuRCA
+This container contains all the necessary programs to run SPAdes
 See https://github.com/ISUGIFsingularity/spades.git for more inforation
 
 %environment
 source /etc/profile.d/modules.sh
-SPACK_ROOT=/app/spack
+SPACK_ROOT=/opt/spack
 export SPACK_ROOT
 export PATH=$SPACK_ROOT/bin:$PATH
 source /etc/profile.d/modules.sh
@@ -24,31 +25,42 @@ module load spades
 
 
 %post
-export SPACK_ROOT=/app/spack
+# Speed up yum
+yum install -y yum-plugin-fastestmirror
+yum install -y deltarpm
+
+export SPACK_ROOT=/opt/spack
 export SPACK_ROOT
 export PATH=$SPACK_ROOT/bin:$PATH
 
-# make sure spack is up2date
-cd $SPACK_ROOT
-git pull
+#spack dependencies
+yum -y install git python \
+gcc gcc-c++ gcc-gfortran curl \
+gnupg2 sed patch \
+unzip gzip bzip2 \
+findutils make vim \
+bc paste wget \
+environment-modules
 
-# modify package to include latest verson
-# wasn't needed in this case so commented out the canu example. version, md5sum and url
-#awk '/v1.5.tar.gz/ { print; print "\n";printf "    version('\''3.13.0'\'', '\''b2543a06787368763d2183388160a00e'\'', url='\'https://github.com/marbl/spades/releases/download/v1.8/spades-1.8.Linux-amd64.tar.xz'\'')"; next }1' $SPACK_ROOT/var/spack/repos/builtin/packages/spades/package.py  > package.py
+yum clean all
+
+#get spack
+git clone https://github.com/spack/spack.git $SPACK_ROOT
 
 
-#mv package.py $SPACK_ROOT/var/spack/repos/builtin/packages/spades/
-cd -
-
-
+yum clean all
 
 export FORCE_UNSAFE_CONFIGURE=1
 
 source $SPACK_ROOT/share/spack/setup-env.sh
 
 
-
-
+#bzip.org is down, dfetching repo from fossies.org into mirror
+#mkdir -p $SPACK_ROOT/mirror/bzip2
+#spack mirror add local $SPACK_ROOT/mirror
+#pushd $SPACK_ROOT/mirror/bzip2
+#wget https://fossies.org/linux/misc/bzip2-1.0.6.tar.gz
+#popd
 
 
 spack install spades@3.13.0

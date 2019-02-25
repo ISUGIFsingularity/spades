@@ -25,30 +25,29 @@ module load spades
 
 
 %post
-# Speed up yum
-yum install -y yum-plugin-fastestmirror
-yum install -y deltarpm
+
 
 export SPACK_ROOT=/opt/spack
 export SPACK_ROOT
 export PATH=$SPACK_ROOT/bin:$PATH
 
 #spack dependencies
-yum -y install git python \
-gcc gcc-c++ gcc-gfortran curl \
-gnupg2 sed patch \
-unzip gzip bzip2 \
+apt-get install -y --no-install-recommends \
+autoconf python \
+gcc-c++ gcc-gfortran \
+curl gnupg2 sed \
+patch unzip gzip bzip2 \
 findutils make vim \
 bc paste wget \
 environment-modules
 
-yum clean all
+
 
 #get spack
 git clone https://github.com/spack/spack.git $SPACK_ROOT
 
 
-yum clean all
+
 
 export FORCE_UNSAFE_CONFIGURE=1
 

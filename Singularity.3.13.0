@@ -1,4 +1,4 @@
-Bootstrap:shub
+Bootstrap:docker
 From:gcc:6.5.0
 
 

@@ -1,5 +1,5 @@
 Bootstrap:shub
-From:ResearchIT/spack-singularity:openmpi
+From:AaronTHolt/openmpi_singularity:spack_base
 
 %labels
 MAINTAINER severin@iastate.edu
@@ -41,25 +41,16 @@ git pull
 cd -
 
 
-yum -y install bc paste wget
-yum clean all
 
 export FORCE_UNSAFE_CONFIGURE=1
 
 source $SPACK_ROOT/share/spack/setup-env.sh
 
 
-#bzip.org is down, dfetching repo from fossies.org into mirror
-mkdir -p $SPACK_ROOT/mirror/bzip2
-spack mirror add local $SPACK_ROOT/mirror
-pushd $SPACK_ROOT/mirror/bzip2
-wget https://fossies.org/linux/misc/bzip2-1.0.6.tar.gz
-popd
 
 
 
 
-spack install cmake
 spack install spades@3.13.0
 
 

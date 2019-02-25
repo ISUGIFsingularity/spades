@@ -11,7 +11,7 @@ See https://github.com/ISUGIFsingularity/spades.git for more inforation
 
 %environment
 source /etc/profile.d/modules.sh
-SPACK_ROOT=/opt/spack
+SPACK_ROOT=/app/spack
 export SPACK_ROOT
 export PATH=$SPACK_ROOT/bin:$PATH
 source /etc/profile.d/modules.sh
@@ -24,7 +24,7 @@ module load spades
 
 
 %post
-export SPACK_ROOT=/opt/spack
+export SPACK_ROOT=/app/spack
 export SPACK_ROOT
 export PATH=$SPACK_ROOT/bin:$PATH
 

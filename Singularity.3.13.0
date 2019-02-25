@@ -40,9 +40,6 @@ git pull
 #mv package.py $SPACK_ROOT/var/spack/repos/builtin/packages/spades/
 cd -
 
-# Speed up yum
-yum install -y yum-plugin-fastestmirror
-yum install -y deltarpm
 
 yum -y install bc paste wget
 yum clean all
@@ -58,6 +55,7 @@ spack mirror add local $SPACK_ROOT/mirror
 pushd $SPACK_ROOT/mirror/bzip2
 wget https://fossies.org/linux/misc/bzip2-1.0.6.tar.gz
 popd
+
 
 
 

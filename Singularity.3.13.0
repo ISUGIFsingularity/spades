@@ -1,13 +1,12 @@
-Bootstrap:docker
-From:gcc:6.5.0
-
+Bootstrap:shub
+From:ResearchIT/spack-singularity:openmpi
 
 %labels
 MAINTAINER severin@iastate.edu
-APPLICATION SPAdes
+APPLICATION MaSurCArunScripts
 
 %help
-This container contains all the necessary programs to run SPAdes
+This container contains all the necessary programs to run MaSuRCA
 See https://github.com/ISUGIFsingularity/spades.git for more inforation
 
 %environment
@@ -25,29 +24,27 @@ module load spades
 
 
 %post
-# Speed up yum
-yum install -y yum-plugin-fastestmirror
-yum install -y deltarpm
-
 export SPACK_ROOT=/opt/spack
 export SPACK_ROOT
 export PATH=$SPACK_ROOT/bin:$PATH
 
-#spack dependencies
-yum -y install git python \
-gcc gcc-c++ gcc-gfortran curl \
-gnupg2 sed patch \
-unzip gzip bzip2 \
-findutils make vim \
-bc paste wget \
-environment-modules
+# make sure spack is up2date
+cd $SPACK_ROOT
+git pull
 
-yum clean all
-
-#get spack
-git clone https://github.com/spack/spack.git $SPACK_ROOT
+# modify package to include latest verson
+# wasn't needed in this case so commented out the canu example. version, md5sum and url
+#awk '/v1.5.tar.gz/ { print; print "\n";printf "    version('\''3.13.0'\'', '\''b2543a06787368763d2183388160a00e'\'', url='\'https://github.com/marbl/spades/releases/download/v1.8/spades-1.8.Linux-amd64.tar.xz'\'')"; next }1' $SPACK_ROOT/var/spack/repos/builtin/packages/spades/package.py  > package.py
 
 
+#mv package.py $SPACK_ROOT/var/spack/repos/builtin/packages/spades/
+cd -
+
+# Speed up yum
+yum install -y yum-plugin-fastestmirror
+yum install -y deltarpm
+
+yum -y install bc paste wget
 yum clean all
 
 export FORCE_UNSAFE_CONFIGURE=1
@@ -56,13 +53,15 @@ source $SPACK_ROOT/share/spack/setup-env.sh
 
 
 #bzip.org is down, dfetching repo from fossies.org into mirror
-#mkdir -p $SPACK_ROOT/mirror/bzip2
-#spack mirror add local $SPACK_ROOT/mirror
-#pushd $SPACK_ROOT/mirror/bzip2
-#wget https://fossies.org/linux/misc/bzip2-1.0.6.tar.gz
-#popd
+mkdir -p $SPACK_ROOT/mirror/bzip2
+spack mirror add local $SPACK_ROOT/mirror
+pushd $SPACK_ROOT/mirror/bzip2
+wget https://fossies.org/linux/misc/bzip2-1.0.6.tar.gz
+popd
 
 
+
+spack install gcc@6.5.0
 spack install spades@3.13.0
 
 

@@ -1,5 +1,6 @@
 Bootstrap:docker
-From:centos:7
+From:tohara/centos-gcc
+
 
 %labels
 MAINTAINER severin@iastate.edu
@@ -11,17 +12,17 @@ export SPACK_ROOT
 export PATH=$SPACK_ROOT/bin:$PATH
 source /etc/profile.d/modules.sh
 source $SPACK_ROOT/share/spack/setup-env.sh
-
-module load spades
+module load gcc
 
 %post
-export SPACK_ROOT=/opt/spack
-export SPACK_ROOT
-export PATH=$SPACK_ROOT/bin:$PATH
 
 # Speed up yum
 yum install -y yum-plugin-fastestmirror
 yum install -y deltarpm
+
+export SPACK_ROOT=/opt/spack
+export SPACK_ROOT
+export PATH=$SPACK_ROOT/bin:$PATH
 
 #spack dependencies
 yum -y install git python \
@@ -48,6 +49,8 @@ echo "    naming_scheme: '\${PACKAGE}/\${VERSION}'" >> /opt/spack/etc/spack/modu
 
 source $SPACK_ROOT/share/spack/setup-env.sh
 
+spack install spades@3.13.0
+
 %runscript
-ls /opt/spack/opt/spack/linux-centos7-x86_64/gcc-7.1.0/spades-3.13.0-2zrc7eh6resnq36756wrxrljgrrsrc4d/bin 
+spack help
 
